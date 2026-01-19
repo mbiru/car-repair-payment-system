@@ -78,17 +78,8 @@ FirstName_LastName_National_Practical_Exam_2025/
    npm install
    ```
 
-3. Configure environment variables:
-   - The `.env` file is already created with default values
-   - Update if your MySQL credentials are different:
-     ```
-     DB_HOST=localhost
-     DB_USER=root
-     DB_PASSWORD=your_password
-     DB_NAME=CRPMS
-     PORT=5000
-     SESSION_SECRET=your-secret-key-change-in-production
-     ```
+3. Configure environment variables
+
 
 4. Start the backend server:
    ```bash
@@ -290,24 +281,7 @@ To remove the project after testing:
    DROP DATABASE CRPMS;
    ```
 
-## Exam Checklist
 
-✅ ERD with proper entities and relationships  
-✅ Database setup with all tables and foreign keys  
-✅ Pre-populated Services table  
-✅ Backend with Express.js and MySQL  
-✅ Session-based authentication  
-✅ Password encryption with bcrypt  
-✅ Strong password validation  
-✅ CRUD operations with specified limitations  
-✅ RESTful API endpoints  
-✅ Frontend with React.js  
-✅ Tailwind CSS for responsive design  
-✅ All required components and pages  
-✅ Reports and bill generation  
-✅ Error handling  
-✅ Input validation  
-✅ Protected routes  
 
 ## Support
 
