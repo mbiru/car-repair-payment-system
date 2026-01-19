@@ -1,0 +1,133 @@
+================================================================================
+                    CAR REPAIR PAYMENT MANAGEMENT SYSTEM (CRPMS)
+                            ENTITY RELATIONSHIP DIAGRAM (ERD)
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              ENTITIES                                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────┐
+│       User          │
+├─────────────────────┤
+│ UserID (PK)         │ ◄───┐
+│ Username            │     │
+│ Password (encrypted)│     │
+└─────────────────────┘     │
+                            │
+                            │ Authentication
+                            │ (1:1 relationship)
+                            │
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              Car                                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ PlateNumber (PK)          │
+│ Type                      │
+│ Model                     │
+│ ManufacturingYear         │
+│ DriverPhone               │
+│ MechanicName              │
+└─────────────────────────────────────────────────────────────────────────────┘
+         │
+         │ 1
+         │
+         │ M (One-to-Many)
+         │
+         ├─────────────────────────────────────┐
+         │                                     │
+         ▼                                     ▼
+┌─────────────────────┐            ┌─────────────────────┐
+│   ServiceRecord     │            │      Payment        │
+├─────────────────────┤            ├─────────────────────┤
+│ RecordNumber (PK)   │            │ PaymentNumber (PK)  │
+│ ServiceDate         │            │ AmountPaid         │
+│ PlateNumber (FK)    │────────────│ PaymentDate        │
+│ ServiceCode (FK)    │            │ PlateNumber (FK)    │──────────┐
+└─────────────────────┘            └─────────────────────┘          │
+         │                                                           │
+         │ M (Many-to-One)                                          │
+         │                                                           │
+         │ 1                                                         │
+         │                                                           │
+         ▼                                                           │
+┌─────────────────────┐                                            │
+│      Services       │                                            │
+├─────────────────────┤                                            │
+│ ServiceCode (PK)    │                                            │
+│ ServiceName         │                                            │
+│ ServicePrice        │                                            │
+└─────────────────────┘                                            │
+                                                                   │
+                                                                   │
+                                                                   │
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         RELATIONSHIP DETAILS                                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ 1. Car ──(1:M)──> ServiceRecord                                             │
+│    - One Car can have Many ServiceRecords                                   │
+│    - Each ServiceRecord belongs to One Car                                  │
+│    - Foreign Key: ServiceRecord.PlateNumber references Car.PlateNumber      │
+│                                                                              │
+│ 2. Services ──(1:M)──> ServiceRecord                                        │
+│    - One Service can be performed in Many ServiceRecords                    │
+│    - Each ServiceRecord uses One Service                                    │
+│    - Foreign Key: ServiceRecord.ServiceCode references Services.ServiceCode│
+│                                                                              │
+│ 3. Car ──(1:M)──> Payment                                                    │
+│    - One Car can have Many Payments                                         │
+│    - Each Payment belongs to One Car                                        │
+│    - Foreign Key: Payment.PlateNumber references Car.PlateNumber           │
+│                                                                              │
+│ 4. User ──(1:1)──> Authentication                                           │
+│    - One User has One Authentication Session                                │
+│    - Used for login and session management                                  │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         CARDINALITY SYMBOLS                                  │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ 1  = One                                                                     │
+│ M  = Many                                                                    │
+│ PK = Primary Key                                                             │
+│ FK = Foreign Key                                                             │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         ATTRIBUTE DETAILS                                    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ User Table:                                                                  │
+│   - UserID: INT AUTO_INCREMENT PRIMARY KEY                                  │
+│   - Username: VARCHAR(50) UNIQUE NOT NULL                                   │
+│   - Password: VARCHAR(255) NOT NULL (bcrypt hashed)                         │
+│                                                                              │
+│ Car Table:                                                                   │
+│   - PlateNumber: VARCHAR(20) PRIMARY KEY                                    │
+│   - Type: VARCHAR(50)                                                       │
+│   - Model: VARCHAR(50)                                                      │
+│   - ManufacturingYear: INT                                                  │
+│   - DriverPhone: VARCHAR(20)                                                │
+│   - MechanicName: VARCHAR(100)                                              │
+│                                                                              │
+│ Services Table:                                                              │
+│   - ServiceCode: INT AUTO_INCREMENT PRIMARY KEY                             │
+│   - ServiceName: VARCHAR(100) NOT NULL                                      │
+│   - ServicePrice: DECIMAL(10,2) NOT NULL                                    │
+│                                                                              │
+│ ServiceRecord Table:                                                         │
+│   - RecordNumber: INT AUTO_INCREMENT PRIMARY KEY                            │
+│   - ServiceDate: DATE NOT NULL                                              │
+│   - PlateNumber: VARCHAR(20) NOT NULL (FK -> Car.PlateNumber)              │
+│   - ServiceCode: INT NOT NULL (FK -> Services.ServiceCode)                 │
+│                                                                              │
+│ Payment Table:                                                               │
+│   - PaymentNumber: INT AUTO_INCREMENT PRIMARY KEY                            │
+│   - AmountPaid: DECIMAL(10,2) NOT NULL                                      │
+│   - PaymentDate: DATE NOT NULL                                              │
+│   - PlateNumber: VARCHAR(20) NOT NULL (FK -> Car.PlateNumber)              │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
